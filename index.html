@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>demo</title>
+    <script
+      src="https://code.jquery.com/jquery-3.7.0.min.js"
+      integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <style>
+      .tool-imageUploader > .border {
+        transition: stroke 10s ease-in-out;
+      }
+      .tool-imageUploader:hover .border {
+        stroke: url(#paint5_linear_206_1462);
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="container"
+      style="width: 100vw; height: 100vh; position: relative"
+    ></div>
+
+    <script src="./DemoApp/Demo1/scripts/CanvasImg2Img.js"></script>
+    <script src="./DemoApp/Demo1/scripts/SaveImg.js"></script>
+
+    <script src="./framework/AiComponents/bark.js"></script>
+    <script src="./framework/AiComponents/llama.js"></script>
+    <script src="./framework/AiComponents/openAI.js"></script>
+    <script src="./framework/AiComponents/sovis.js"></script>
+    <script src="./framework/Laucher/AppOrganizer/download.js"></script>
+    <script src="./framework/Laucher/DesktopOrganizer/desktop.js"></script>
+    <script src="./framework/UI/ExtendedUI/3dSkeleton.js"></script>
+    <script src="./framework/UI/ExtendedUI/Reveal.js"></script>
+
+    <script src="./framework/Scripting/script.js"></script>
+    <script src="./framework/AiComponents/sd.js"></script>
+    <script src="./framework//UI/SystemUI/BaseView.js" type="module"></script>
+    <script src="./framework//UI/SystemUI/Button.js" type="module"></script>
+    <script
+      src="./framework/UI/SystemUI/ImageUploader.js"
+      type="module"
+    ></script>
+    <script src="./framework/UI/SystemUI/Input.js" type="module"></script>
+    <script src="./framework/UI/SystemUI/Text.js" type="module"></script>
+    <script src="./framework/myapp.js" type="module"></script>
+  </body>
+</html>
