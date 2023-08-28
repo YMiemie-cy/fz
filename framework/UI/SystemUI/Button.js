@@ -106,7 +106,7 @@ class Button extends BaseView {
           const iconElement = document.createElement("img");
           iconElement.src = this.content.icon;
           iconElement.style.cssText = `
-          position:absolute; top:0;left:0;right:0;bottom:0;margin:auto;height:80%;width:80%;
+          position:absolute; top:0;left:0;right:0;bottom:0;margin:auto;height:60%;width:60%;
           `;
           this.element.appendChild(iconElement);
         } else {

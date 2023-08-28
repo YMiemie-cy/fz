@@ -5,10 +5,12 @@ class NavigationBar extends BaseView {
   }
 
   startDrawing(parent) {
-    // console.log("parent", this.element, parent);
-    // 开始按钮的绘制逻辑
-    // 解析JSON数据并创建DOM元素
-
+    this.element.innerHTML = `
+    <nav
+        style="display: flex; flex-direction: column; width: 100%; height: 100%"
+      >
+    </nav>
+    `;
     if (this.attributes) {
       for (const attr in this.attributes) {
         this.element.setAttribute(attr, this.attributes[attr]);
@@ -22,282 +24,96 @@ class NavigationBar extends BaseView {
     this.element.style.left = this.frame.x;
     this.element.style.top = this.frame.y;
     this.element.style.zIndex = this.frame.zIndex;
-    // this.element.style.overflow = "hidden";
-    this.element.style.borderRadius = "4px";
+    // this.element.style.display = "flex";
+    // this.element.style.flexDirection = "column";
 
     if (this.content) {
-      let itemHeight = this.frame.height.split("px")[0];
       for (let i = 0; i < this.content.list.length; i++) {
         if (i === 0) {
-          let tem = document.createElement("div");
-          tem.innerHTML = `
-          <div
-          style="
-            box-sizing: border-box;
-            width: 100%;
-            height: 100%;
-            position: static;
-          "
-        >
+          let tem = document.createElement("a");
+          tem.classList.add("nav-item");
+          tem.href = "#";
+          tem.classList.add("active");
+          tem.innerHTML = `        
           <div
             style="
-              box-sizing: border-box;
-              width: 100%;
-              height: 100%;
-              position: absolute;
-              left: 0;
-              top: 0;
-              overflow: hidden;
+              display: inline-block;
+              position: relative;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              border-radius: 4px;
+            
+              padding: 1px;
+              background-size: contain;
+              height: 60%;
             "
           >
-            <div
-              style="
-                box-sizing: border-box;
-                background: rgba(42, 45, 56, 0.2);
-                border-radius: 6px;
-                width: 100%;
-                height: 100%;
-                position: absolute;
-                left: 0px;
-                top: 0px;
-              "
-            ></div>
-            <div
-              style="
-                box-sizing: border-box;
-                background: linear-gradient(
-                  180deg,
-                  rgba(245, 133, 122, 0.1) 0%,
-                  rgba(255, 108, 94, 0.12) 100%
-                );
-                border-radius: 6px;
-                border-width: 1px;
-                border-style: solid;
-                border-image: linear-gradient(
-                  96.92deg,
-                  rgba(250, 124, 112, 0) 1.5625%,
-                  rgba(250, 124, 112, 1) 14.0625%,
-                  rgba(157, 127, 245, 1) 24.447156488895416%,
-                  rgba(157, 127, 245, 0) 74.28854703903198%,
-                  rgba(157, 127, 245, 0) 100%
-                );
-                border-image-slice: 1;
-                width: 100%;
-                height: 100%;
-                position: absolute;
-                left: 0px;
-                top: 0px;
-              "
-            ></div>
-            <div
-              style="
-                box-sizing: border-box;
-                background: radial-gradient(
-                  closest-side,
-                  rgba(41, 44, 55, 0.9) 0%,
-                  rgba(41, 44, 55, 0.9) 52.988046407699585%,
-                  rgba(41, 44, 55, 0) 100%
-                );
-                border-radius: 50%;
-                width: 124%;
-                height: 137%;
-                position: absolute;
-                left: -15%;
-                top: -14%;
-              "
-            ></div>
-            <div
-              style="
-                box-sizing: border-box;
-                color: #c4c6ca;
-                text-align: center;
-                font: 400 14px sans-serif;
-                position: absolute;
-                left: 34%;
-                top: 0;
-                bottom: 0;
-                margin: auto 0;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-              "
-            >
-              ${this.content.list[i].text}
-            </div>
-            <div
-              style="
-                box-sizing: border-box;
-                background: radial-gradient(
-                  closest-side,
-                  rgba(255, 255, 255, 0.8) 0%,
-                  rgba(255, 255, 255, 0) 100%
-                );
-                width: 58%;
-                height: 3%;
-                position: absolute;
-                left: 19%;
-                top: 0px;
-              "
-            ></div>
-            <div
-              style="
-                box-sizing: border-box;
-                background: radial-gradient(
-                  closest-side,
-                  rgba(157, 127, 245, 0.11) 0%,
-                  rgba(157, 127, 245, 0) 100%
-                );
-                border-radius: 50%;
-                width: 66%;
-                height: 29%;
-                position: absolute;
-                left: 7%;
-                top: -3%;
-              "
-            ></div>
-  
             <img
               src="${this.content.list[i].icon}"
-              style="
-                position: absolute;
-                top: 0;
-                left: 13%;
-                right: 0;
-                bottom: 0;
-                margin: auto 0;
-              "
+              alt=""
+              style="margin: 0 10px; position: relative; z-index: 1"
             />
           </div>
-        </div>
+          ${this.content.list[i].text}
+       
 `;
-          this.element.appendChild(tem);
-        } else {
-          let tem = document.createElement("div");
-          tem.innerHTML = `
-            <div
-        style="
-          box-sizing: border-box;
-          width: 100%;
-          height: 100%;
-          position: static;
 
-        "
-      >
-        <div
-          style="
-            box-sizing: border-box;
-            width: 100%;
-            height: 100%;
-            position: static;
-          "
-        >
-          <div
-            class="frame-115"
-            style="
-              box-sizing: border-box;
-              border-radius: 6px;
-              width: 100%;
-              height: 100%;
-              position: absolute;
-              left: 0;
-              top: 0;
-              overflow: hidden;
-            "
-          >
+          tem.style.cssText = `
+          box-sizing: border-box;
+          cursor: pointer;
+          color: #c4c6ca;
+          flex: 1;
+          text-decoration: none;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          transition: background-color 0.3s, color 0.3s;
+          border-radius: 4px;
+          `;
+          this.element.querySelector("nav").appendChild(tem);
+        } else {
+          let tem = document.createElement("a");
+          tem.classList.add("nav-item");
+          tem.href = "#";
+          tem.innerHTML = `        
             <div
               style="
-                box-sizing: border-box;
-                background: rgba(157, 127, 245, 0.1);
-                border-radius: 6px;
-                border-width: 0.6px;
-                border-style: solid;
-                border-image: linear-gradient(
-                  180deg,
-                  rgba(157, 127, 245, 0.1) 0%,
-                  rgba(0, 0, 0, 0) 100%
-                );
-                border-image-slice: 1;
-                width: 26%;
-                height: 100%;
-                position: absolute;
-                left: 0px;
-                top: 0px;
+                display: inline-block;
+                position: relative;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 4px;
+                background: url(./framework/Assets/nav-noactiveback.svg) no-repeat
+                  center center; /* 设置背景色 */
+                padding: 1px;
+                background-size: contain;
+                height: 60%;
               "
             >
               <img
                 src="${this.content.list[i].icon}"
-                style="
-                  position: absolute;
-                  top: 0;
-                  left: 0;
-                  right: 0;
-                  bottom: 0;
-                  margin: auto;
-                  z-index: 1;
-                "
+                alt=""
+                style="margin: 0 10px; position: relative; z-index: 1"
               />
             </div>
-            <div
-              style="
-                box-sizing: border-box;
-                background: radial-gradient(
-                  closest-side,
-                  rgba(18, 18, 18, 0.85) 0%,
-                  rgba(18, 18, 18, 0) 100%
-                );
-                border-radius: 50%;
-                width: 32%;
-                height: 107%;
-                position: absolute;
-                left: -3%;
-                top: 0px;
-              "
-            ></div>
-
-            <div
-              style="
-                box-sizing: border-box;
-                background: radial-gradient(
-                  closest-side,
-                  rgba(250, 124, 112, 0.16) 0%,
-                  rgba(18, 18, 18, 0) 100%
-                );
-                border-radius: 50%;
-                width: 21%;
-                height: 65%;
-                position: absolute;
-                left: 7%;
-                top: 38%;
-              "
-            ></div>
-          </div>
-          <div
-            style="
-              box-sizing: border-box;
-              color: #c4c6ca;
-              text-align: center;
-              font: 400 14px sans-serif;
-              position: absolute;
-              left: 30%;
-              top: 0;
-              bottom: 0;
-              margin: auto 0;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-            "
-          >
-          ${this.content.list[i].text}
-          </div>
-        </div>
-      </div>
+            ${this.content.list[i].text}
+         
+  `;
+          tem.style.cssText = `
+            box-sizing: border-box;
+            cursor: pointer;
+            color: #c4c6ca;
+            flex: 1;
+            text-decoration: none;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            transition: background-color 0.3s, color 0.3s;
+            border-radius: 4px;
             `;
-          tem.style.position = "absolute";
-          tem.style.top = `${itemHeight * i + 10 * i}px`;
-          tem.style.width = this.frame.width;
-          tem.style.height = this.frame.height;
-
-          this.element.appendChild(tem);
+          this.element.querySelector("nav").appendChild(tem);
         }
       }
     }
@@ -360,6 +176,41 @@ class NavigationBar extends BaseView {
     // 创建DOM并添加到父级容器
 
     parentContainer.appendChild(domElement);
+
+    let styleTag = document.createElement("style");
+    styleTag.textContent = `
+    .nav-item:hover {
+        background-color: #555;
+      }
+
+      .nav-item.active {
+        background: url(./framework/Assets/nav-active.svg) no-repeat center
+          center;
+        background-size: contain;
+      }
+    `;
+    document.head.appendChild(styleTag);
+
+    const navItems = document.querySelectorAll(".nav-item");
+
+    navItems.forEach((item) => {
+      item.addEventListener("click", () => {
+        navItems.forEach((otherItem, index) => {
+          otherItem.classList.remove("active");
+          let img = otherItem.querySelector("img");
+          if (img.src.includes("icon.svg")) {
+            img.src = img.src.split("icon.svg")[0] + ".svg";
+          }
+          otherItem.querySelector("div").style.background =
+            "url(./framework/Assets/nav-noactiveback.svg) no-repeat center center";
+        });
+        item.classList.add("active");
+        let img = item.querySelector("img");
+        img.src = img.src.split(".svg")[0] + "icon.svg";
+
+        item.querySelector("div").style.background = "none";
+      });
+    });
   }
 
   handleActions(arr) {

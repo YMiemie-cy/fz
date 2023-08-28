@@ -17,6 +17,8 @@ class Input extends BaseView {
     this.element.style.zIndex = this.frame.zIndex;
     this.element.style.overflow = "hidden";
     this.element.style.borderRadius = "4px";
+    this.element.style.display = "flex";
+    this.element.style.alignItems = "center";
 
     if (this.content) {
       for (const content in this.content) {
@@ -41,9 +43,7 @@ class Input extends BaseView {
 
         if (attr === "type" && this.attributes[attr] === "input") {
           this.element.innerHTML = `
-     
           <svg
-       
             style=" border-radius: 0px;
             position: absolute;
             left: 16%;
@@ -70,7 +70,6 @@ class Input extends BaseView {
           top: 0;
           overflow: hidden;">
             <svg
-              class="rectangle-565"
               style="border-radius: 0px;
               position: absolute;
               left: 0px;
@@ -140,7 +139,7 @@ class Input extends BaseView {
             position: relative;
          
             height: 100%;
-       
+            font-size: 1em;
             display: flex;
             justify-content: flex-start;
             align-items: center;
@@ -170,16 +169,36 @@ class Input extends BaseView {
        
            
             </div>
-            <input  type="text"  style="color: rgb(196, 198, 202);
+           
+
+            ${
+              this.attributes.isTextarea
+                ? `<textarea style="color: rgb(196, 198, 202);
             caret-color: rgb(156, 129, 242);
-            border: 0px;
+            border: none;
             outline-style: none;
             background-color: transparent;
             position: absolute;
             left: 27%;
             width: 72%;
             font-size: 1em;
-            height: 100%;">
+            height: 95%;
+            resize: none; 
+            padding:0;
+            overflow: auto;"></textarea>`
+                : ` <input  type="text"  style="color: rgb(196, 198, 202);
+                caret-color: rgb(156, 129, 242);
+                border: 0px;
+                outline-style: none;
+                background-color: transparent;
+                position: absolute;
+                left: 27%;
+                width: 72%;
+                font-size: 1em;
+                height: 100%;" />`
+            }
+
+            
           </div>
     
             `;
@@ -397,7 +416,23 @@ class Input extends BaseView {
         </linearGradient>
       </defs>
     </svg>
-            <input  type="text"  style="color: rgb(196, 198, 202);
+            
+            ${
+              this.attributes.isTextarea
+                ? `<textarea style="color: rgb(196, 198, 202);
+            caret-color: rgb(156, 129, 242);
+            border: none;
+            outline-style: none;
+            background-color: transparent;
+            position: absolute;
+            left: 27%;
+            width: 72%;
+            font-size: 1em;
+            height: 95%;
+            resize: none; 
+            padding:0;
+            overflow: auto;"></textarea>`
+                : `<input  type="text"  style="color: rgb(196, 198, 202);
             caret-color: rgb(156, 129, 242);
             border: 0px;
             outline-style: none;
@@ -406,7 +441,8 @@ class Input extends BaseView {
             left: 27%;
             width: 72%;
             font-size: 1em;
-            height: 100%;">
+            height: 100%;">`
+            }
           </div>
     
             `;
@@ -525,14 +561,9 @@ class Input extends BaseView {
             `;
           box.appendChild(tem);
 
-          tem = document.createElement("input");
-          if (this.attributes) {
-            for (const attr in this.attributes) {
-              tem.setAttribute(attr, this.attributes[attr]);
-            }
-          }
-
-          tem.style.cssText = `
+          if (!this.attributes.isTextarea) {
+            tem = document.createElement("input");
+            tem.style.cssText = `
             color: #c4c6ca;
             caret-color: #9C81F2;
             font: 400 16px "Arial", sans-serif;
@@ -546,6 +577,30 @@ class Input extends BaseView {
             height:100%;
             font-size: 1em;
             `;
+          } else {
+            tem = document.createElement("textarea");
+            tem.style.cssText = `
+            color: rgb(196, 198, 202);
+            caret-color: rgb(156, 129, 242);
+            border: none;
+            outline-style: none;
+            background-color: transparent;
+            position: absolute;
+            width: 100%;
+            font-size: 1em;
+            height: 95%;
+            resize: none; 
+            padding:0;
+            overflow: auto;
+            `;
+          }
+
+          if (this.attributes) {
+            for (const attr in this.attributes) {
+              tem.setAttribute(attr, this.attributes[attr]);
+            }
+          }
+
           box.appendChild(tem);
           this.element.appendChild(box);
         }
@@ -562,16 +617,6 @@ class Input extends BaseView {
 
     for (const action of this.actions) {
       if (action.script) {
-        // Execute the script
-        // let layerElement = this.element;
-        // const scriptFunction = new Function(...action.data, action.script);
-        // const functionCallString = `scriptFunction(${Array.from(
-        //   action.data
-        // ).join(", ")});`;
-        // eval(functionCallString);
-        // const functionCallString = `this.onClick(this.element, ${Array.from(
-        //   action.data
-        // ).join(", ")});`;
         if (!action.event) {
           let functionCallString;
           let layerElement = this.element;

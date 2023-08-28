@@ -1,0 +1,134 @@
+{
+  "name": "",
+  "time": "",
+  "config": {
+    "style": {
+      "background": "#353945",
+      "display": "flex",
+      "flex-direction": "column"
+    }
+  },
+  "actions": [
+    {
+      "script": "",
+      "data": []
+    }
+  ],
+  "layers": [
+    {
+      "type": "SideBar",
+      "name": "SideBar",
+      "frame": {
+        "width": "",
+        "height": "",
+        "x": "",
+        "y": "",
+        "zIndex": ""
+      },
+      "attributes": {},
+      "content": {},
+      "style": {},
+      "actions": []
+    },
+    {
+      "type": "Text",
+      "name": "title",
+      "frame": {
+        "width": "",
+        "height": "",
+        "x": "",
+        "y": "",
+        "zIndex": ""
+      },
+      "attributes": {
+        "type": "headline"
+      },
+      "content": {
+        "text": "SoraNix"
+      },
+      "style": {},
+      "actions": []
+    },
+    {
+      "type": "Text",
+      "name": "introduce",
+      "frame": {
+        "width": "",
+        "height": "",
+        "x": "",
+        "y": "",
+        "zIndex": ""
+      },
+      "attributes": {
+        "type": "textContent"
+      },
+      "content": {
+        "text": "Quickly generate gorgeous images of characters"
+      },
+      "style": {},
+      "actions": []
+    },
+    {
+      "type": "BaseView",
+      "name": "InputBox",
+      "frame": {
+        "width": "",
+        "height": "",
+        "x": "",
+        "y": "",
+        "zIndex": ""
+      },
+      "attributes": {},
+      "content": {},
+      "style": {},
+      "actions": [],
+      "children": [
+        {
+          "type": "ParameterBlock",
+          "name": "ParameterBlock",
+          "frame": {
+            "width": "",
+            "height": "",
+            "x": "",
+            "y": "",
+            "zIndex": ""
+          },
+          "attributes": {},
+          "content": {},
+          "style": {},
+          "actions": []
+        },
+        {
+          "type": "Input",
+          "name": "Input",
+          "frame": {
+            "width": "",
+            "height": "",
+            "x": "",
+            "y": "",
+            "zIndex": ""
+          },
+          "attributes": {},
+          "content": {},
+          "style": {},
+          "actions": []
+        }
+      ]
+    },
+    {
+      "type": "ImgUploader",
+      "name": "ImgUploader",
+      "frame": {
+        "width": "",
+        "height": "",
+        "x": "",
+        "y": "",
+        "zIndex": ""
+      },
+      "attributes": {},
+      "content": {},
+      "style": {},
+      "actions": []
+    }
+  ]
+}

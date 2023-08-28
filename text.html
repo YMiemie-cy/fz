@@ -1,33 +1,113 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>JS Bin</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/classic.min.css"
+    />
+    <!-- 'classic' theme -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/monolith.min.css"
+    />
+    <!-- 'monolith' theme -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/nano.min.css"
+    />
+    <!-- 'nano' theme -->
+
+    <title>Pickr Color Picker</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f0f0f0;
+      }
+
+      .pickr {
+        height: 100%;
+        display: flex;
+        align-items: center;
+      }
+    </style>
   </head>
   <body>
-    <!DOCTYPE html>
-    <html lang="en">
-      <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Background Example</title>
-        <style>
-          .example {
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(
-                closest-side,
-                rgba(18, 18, 18, 0.9) 0%,
-                rgba(18, 18, 18, 0) 100%
-              ),
-              rgba(250, 124, 112, 0.13), rgba(42, 45, 56, 0.5);
-          }
-        </style>
-      </head>
-      <body>
-        <div class="example"></div>
-      </body>
-    </html>
+    <div
+      id="box"
+      style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 162px;
+        height: 24px;
+        padding: 2px;
+      "
+    >
+      <div id="picker-color" style="font-size: 10px"></div>
+      <div class="picker-input" style="flex: 1; padding: 0 10px">
+        <input
+          type="text"
+          style="
+            width: 100%;
+            box-sizing: border-box;
+            text-align: center;
+            border: 0px;
+            outline-style: none;
+            background-color: transparent;
+          "
+          value="#FFFFFF"
+        />
+      </div>
+
+      <div class="picker-opacity">100%</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.es5.min.js"></script>
+    <script>
+      const initialColor = "#ff5733"; // 外部十六进制颜色值
+      // 初始化Pickr
+      const pickr = Pickr.create({
+        el: "#picker-color",
+        theme: "classic", // 主题
+        default: initialColor, // 初始颜色
+        comparison: false, // 是否显示颜色比较框
+        swatches: [
+          "rgba(244, 67, 54, 1)",
+          "rgba(233, 30, 99, 0.8)",
+          "rgba(156, 39, 176, 0.5)",
+          "rgba(63, 81, 181, 0.3)",
+          "rgba(33, 150, 243, 0.1)",
+          "rgba(0, 0, 0, 0)",
+        ], // 预定义颜色样本
+        components: {
+          opacity: true, // 是否显示透明度控制
+          preview: true, // 是否显示预览框
+          hue: true, // 是否显示色相选择
+          interaction: {
+            input: true, // 是否允许输入颜色值
+            clear: true, // 是否显示清除按钮
+            save: true, // 是否显示保存按钮
+          },
+        },
+        onInit: (instance) => {
+          // 设置初始颜色后的回调函数
+          instance.setColor(initialColor); // 设置选择器颜色
+        },
+      });
+
+      // 颜色选择事件处理
+      pickr.on("save", (color) => {
+        const hexColor = color.toHEXA().toString();
+        const opacity =
+          color.toRGBA().toString().split(",")[3].split(")")[0] * 100; // 获取颜色的 RGBA 表示
+      });
+    </script>
   </body>
 </html>

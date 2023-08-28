@@ -185,9 +185,6 @@ class ImageUploader extends BaseView {
     <rect width="100%" height="100%" rx="8" fill="white"/>
     </clipPath>
     </defs>
-       
-      
-       
            <div   style=" flex-direction: column;
            box-sizing: border-box;
            color: #c4c6ca;
@@ -210,6 +207,33 @@ class ImageUploader extends BaseView {
 ">
         Upload Image</div>
     </svg>
+
+    <div
+    class="imageUploader-input-contain"
+    style="
+      overflow:hidden;
+      position: absolute;
+      box-sizing: border-box;
+      width: 98%;
+      height: 98%;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: auto;
+      border-radius: 4px;
+    "
+  >
+    <div class="image-container">
+      <div class="primary-image"></div>
+      <div class="image-list"></div>
+    </div>
+    <label for="imageInput" class="custom-upload-button">
+     
+    </label>
+    <input type="file" id="imageInput" accept="image/*" multiple />
+    <input type="file" id="singularImageInput" accept="image/*" />
+  </div>
     `;
     /** */
 
@@ -221,6 +245,262 @@ class ImageUploader extends BaseView {
     this.element.style.left = this.frame.x;
     this.element.style.top = this.frame.y;
     this.element.style.zIndex = this.frame.zIndex;
+
+    if (this.attributes) {
+      for (const attr in this.attributes) {
+        if (attr === "isPens" && this.attributes[attr] === "true") {
+          let tem = document.createElement("div");
+          tem.innerHTML = `
+          <canvas id="canvas" width="${this.frame.width}" height="${this.frame.height}"></canvas>
+  
+          `;
+          tem.style.cssText = `
+          position: absolute;
+        top: 0;
+        left: 0;
+        width:100%;
+        height:100%;
+          `;
+
+          this.element.appendChild(tem);
+          let tem2 = document.createElement("div");
+          tem2.innerHTML = `
+         
+    <div style="display: flex;
+    width:100%;
+    gap: 10px;
+    ">
+      <button id="pen">Pen</button>
+      <button id="rectangle">Rectangle</button>
+      <button id="circle">Circle</button>
+      <button id="star">Star</button>
+    </div>
+          `;
+          tem2.style.cssText = `     
+          `;
+
+          this.element.appendChild(tem2);
+
+          const canvas = tem.querySelector("#canvas");
+          const context = canvas.getContext("2d");
+
+          const penButton = tem2.querySelector("#pen");
+          const rectangleButton = tem2.querySelector("#rectangle");
+          const circleButton = tem2.querySelector("#circle");
+          const starButton = tem2.querySelector("#star");
+
+          let isDrawing = false;
+          let shape = "";
+          let startX, startY;
+          let shapes = [];
+          let currentPath = [];
+
+          canvas.addEventListener("mousedown", startDrawing);
+          canvas.addEventListener("mousemove", draw);
+          canvas.addEventListener("mouseup", endDrawing);
+          canvas.addEventListener("mouseleave", endDrawing);
+
+          penButton.addEventListener("click", () => changeShape("pen"));
+          rectangleButton.addEventListener("click", () =>
+            changeShape("rectangle")
+          );
+          circleButton.addEventListener("click", () => changeShape("circle"));
+          starButton.addEventListener("click", () => changeShape("star"));
+
+          function startDrawing(event) {
+            if (!shape) return;
+            isDrawing = true;
+            startX = event.offsetX;
+            startY = event.offsetY;
+
+            if (shape === "pen") {
+              context.beginPath();
+              context.moveTo(startX, startY);
+              currentPath.push({ x: startX, y: startY });
+            }
+          }
+
+          function draw(event) {
+            if (!isDrawing) return;
+            const { offsetX, offsetY } = event;
+            context.fillStyle = "rgba(156, 129, 242, 0.40)";
+            context.strokeStyle = "rgba(156, 129, 242, 0.40)";
+
+            if (shape === "pen") {
+              context.lineWidth = 20;
+              context.lineTo(offsetX, offsetY);
+              context.stroke();
+              currentPath.push({ x: offsetX, y: offsetY });
+              startX = offsetX;
+              startY = offsetY;
+            } else {
+              redrawShapes();
+
+              if (shape === "rectangle") {
+                context.fillRect(
+                  startX,
+                  startY,
+                  offsetX - startX,
+                  offsetY - startY
+                );
+              } else if (shape === "circle") {
+                const radius = Math.sqrt(
+                  (offsetX - startX) ** 2 + (offsetY - startY) ** 2
+                );
+                context.beginPath();
+                context.arc(startX, startY, radius, 0, Math.PI * 2);
+                context.fill();
+              } else if (shape === "star") {
+                drawStar(
+                  startX,
+                  startY,
+                  5,
+                  Math.sqrt((offsetX - startX) ** 2 + (offsetY - startY) ** 2) /
+                    2
+                );
+                context.fill();
+              }
+            }
+          }
+
+          function endDrawing(event) {
+            if (!isDrawing) return;
+            isDrawing = false;
+            const { offsetX, offsetY } = event;
+
+            if (shape === "pen") {
+              shapes.push({
+                type: "pen",
+                path: [...currentPath],
+              });
+              currentPath = [];
+            }
+
+            if (shape === "rectangle") {
+              shapes.push({
+                type: "rectangle",
+                x: startX,
+                y: startY,
+                width: offsetX - startX,
+                height: offsetY - startY,
+              });
+            } else if (shape === "circle") {
+              const radius = Math.sqrt(
+                (offsetX - startX) ** 2 + (offsetY - startY) ** 2
+              );
+              shapes.push({ type: "circle", x: startX, y: startY, radius });
+            } else if (shape === "star") {
+              shapes.push({
+                type: "star",
+                x: startX,
+                y: startY,
+                size:
+                  Math.sqrt((offsetX - startX) ** 2 + (offsetY - startY) ** 2) /
+                  2,
+              });
+            }
+
+            redrawShapes();
+          }
+
+          function changeShape(newShape) {
+            shape = newShape;
+
+            // 根据形状设置画布样式
+            if (shape === "pen") {
+              canvas.classList.add("draw-pen");
+            } else {
+              canvas.classList.remove("draw-pen");
+            }
+          }
+
+          function drawStar(x, y, arms, size) {
+            context.beginPath();
+            context.moveTo(x, y - size);
+
+            for (let i = 0; i < arms * 2; i++) {
+              const angle = Math.PI / arms + i * (Math.PI / arms);
+              const r = i % 2 === 0 ? size : size / 2;
+              const currX = x + Math.cos(angle) * r;
+              const currY = y + Math.sin(angle) * r;
+              context.lineTo(currX, currY);
+            }
+
+            context.closePath();
+
+            context.fill();
+          }
+
+          function redrawShapes() {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            for (const shape of shapes) {
+              if (shape.type === "pen") {
+                context.beginPath();
+                context.moveTo(shape.path[0].x, shape.path[0].y);
+                for (const point of shape.path) {
+                  context.lineTo(point.x, point.y);
+                  context.stroke();
+                }
+              } else if (shape.type === "rectangle") {
+                context.fillRect(shape.x, shape.y, shape.width, shape.height);
+              } else if (shape.type === "circle") {
+                context.beginPath();
+                context.arc(shape.x, shape.y, shape.radius, 0, Math.PI * 2);
+                context.fill();
+              } else if (shape.type === "star") {
+                drawStar(shape.x, shape.y, 5, shape.size);
+              }
+            }
+          }
+        }
+        if (attr === "isImgCompare" && this.attributes[attr] === "true") {
+          let tem = document.createElement("div");
+          tem.style.cssText = `
+          position: absolute;
+          top: 0;
+          height: 100%;
+          width: 100%;
+          `;
+          tem.innerHTML = `
+          <div  style="
+          position: relative;
+          width: 100%;
+          height: 100%;">
+          <div class="img background-img" ></div>
+          <div class="img foreground-img" ></div>
+          <input
+            type="range"
+            min="1"
+            max="100"
+            value="50"
+            class="slider"
+            name="slider"
+            id="slider"
+          />
+          <div class="slider-button"></div>
+        </div>
+          `;
+          this.element.appendChild(tem);
+          const slider = this.element.querySelector(".slider");
+          let ele = this.element;
+
+          let sliderPos;
+          slider.addEventListener("input", function (e) {
+            sliderPos = e.target.value;
+            ele.querySelector(".foreground-img").style.width = `${sliderPos}% `;
+
+            const styleElement = document.createElement("style");
+            styleElement.innerHTML = `.slider::-webkit-slider-thumb { left: ${sliderPos}% !important}`;
+
+            document.head.appendChild(styleElement);
+
+            ele.querySelector(
+              ".slider-button"
+            ).style.left = `calc(${sliderPos}% - 16px)`;
+          });
+        }
+      }
+    }
 
     if (this.content) {
       for (const content in this.content) {
@@ -294,6 +574,224 @@ class ImageUploader extends BaseView {
     // 创建DOM并添加到父级容器
 
     parentContainer.appendChild(domElement);
+
+    let styleTag = document.createElement("style");
+    styleTag.textContent = `
+    .tool-imageUploader > .border {
+      transition: stroke 10s ease-in-out;
+    }
+    .tool-imageUploader:hover .border {
+      stroke: url(#paint5_linear_206_1462);
+    }
+    .image-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+
+      display: flex;
+      align-items: center;
+      z-index: 2;
+    }
+
+    .image-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .primary-image {
+      width: 83%;
+      height: 100%;
+      margin-right: 6px;
+    }
+
+    .image-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      max-height: 100%;
+      width: 17%;
+      overflow-y: auto;
+    }
+
+    .custom-upload-button {
+      display: inline-block;
+      
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+    }
+    .custom-upload-button:hover {
+      
+    }
+
+    #imageInput {
+      display: none;
+      position: absolute;
+      z-index: 999;
+    }
+    #singularImageInput{
+      display: none;
+      position: absolute;
+    }
+    .image-list::-webkit-scrollbar {
+      width: 0.5em; /* 调整滚动条宽度 */
+    }
+
+    .image-list::-webkit-scrollbar-track {
+      background-color: transparent; /* 隐藏滚动条背景 */
+    }
+
+    .image-list::-webkit-scrollbar-thumb {
+      background-color: transparent; /* 隐藏滚动条滑块 */
+    }
+    
+    .image-container img:hover{
+      cursor:pointer;
+      background:#555;
+     
+    }
+
+    #${this.name} .img{
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: ${this.frame.width} 100%;
+    }
+    #${this.name} .background-img {
+      background-image: url("https://i.loli.net/2020/12/28/1dGpFx3zJ9Pjcme.jpg");
+    }
+    #${this.name} .foreground-img {
+      background-image: url("https://i.loli.net/2020/12/28/xIZmjtBR5VWoqiz.jpg");
+      width: 50%;
+    }
+    #${this.name} .slider {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      outline: none;
+      margin: 0;
+      transition: all 0.2s;
+    }
+
+    #${this.name}  .slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 2px;
+      height: ${this.frame.height};
+      background-image: linear-gradient(
+        -360deg,
+        rgba(157, 127, 245, 1) 0%,
+        rgba(255, 255, 255, 0.9) 100%
+      );
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      background-position: 0 0;
+      cursor: pointer;
+      position: absolute;
+      top: 0;
+      left: 50%;
+    }
+
+    #${this.name}  .slider-button {
+      pointer-events: none;
+      position: absolute;
+      width: 15px;
+      height: 30px;
+      border-radius: 10%;
+      background-color: rgba(250, 124, 112, 0.1);
+      border: solid 1px rgba(157, 127, 245, 1);
+      left: calc(50% - 15px);
+      top: calc(50% - 7.5px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  
+    #${this.name}  .slider-button::before {
+      content: "";
+      padding: 3px;
+      display: inline-block;
+      border: solid rgba(157, 127, 245, 1);
+      border-width: 0 1px 1px 0;
+      transform: rotate(135deg);
+    }
+    `;
+
+    document.head.appendChild(styleTag);
+
+    /** */
+    const imageInput = document.querySelector("#imageInput");
+    const singularImageInput = document.querySelector("#singularImageInput");
+    const primaryImage = document.querySelector(".primary-image");
+    const imageList = document.querySelector(".image-list");
+    const imageContainer = document.querySelector(".image-container");
+    const imageUploaderInputContain = document.querySelector(
+      ".imageUploader-input-contain"
+    );
+
+    let currentImg;
+
+    imageInput.addEventListener("change", (event) => {
+      const selectedFiles = event.target.files;
+
+      if (selectedFiles.length > 0) {
+        primaryImage.innerHTML = `<img style="border-radius: 2px;" src="${URL.createObjectURL(
+          selectedFiles[0]
+        )}" alt="Selected Image">`;
+        imageContainer.style.height = "100%";
+        imageUploaderInputContain.style.backgroundColor = "#252831";
+
+        if (selectedFiles.length === 1) {
+          primaryImage.style.width = "100%";
+          imageList.style.width = "0%";
+        } else {
+          primaryImage.style.width = "83%";
+          imageList.style.width = "17%";
+        }
+
+        imageList.innerHTML = "";
+        for (let i = 1; i < selectedFiles.length; i++) {
+          const div = document.createElement("div");
+          div.style.cssText = `
+          height:${Number(this.frame.height.split("px")[0]) * 0.22}px;
+            `;
+
+          const img = document.createElement("img");
+          img.style.borderRadius = "2px";
+          img.src = URL.createObjectURL(selectedFiles[i]);
+          img.alt = `Image ${i + 1}`;
+          div.appendChild(img);
+          imageList.appendChild(div);
+        }
+        this.element.querySelectorAll("img").forEach((item) => {
+          item.addEventListener("click", () => {
+            console.log(item);
+            currentImg = item;
+            singularImageInput.click();
+          });
+        });
+      }
+    });
+    singularImageInput.addEventListener("change", () => {
+      let selectedFile = event.target.files[0];
+      currentImg.src = URL.createObjectURL(selectedFile);
+    });
+
+    /** */
   }
 
   handleAnimation() {

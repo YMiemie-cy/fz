@@ -5,27 +5,35 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>demo</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/classic.min.css"
+    />
     <script
       src="https://code.jquery.com/jquery-3.7.0.min.js"
       integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
       crossorigin="anonymous"
     ></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-
-    <style>
-      .tool-imageUploader > .border {
-        transition: stroke 10s ease-in-out;
-      }
-      .tool-imageUploader:hover .border {
-        stroke: url(#paint5_linear_206_1462);
-      }
-    </style>
   </head>
-  <body>
+  <body style="font-family: Arial, sans-serif; margin: 0">
     <div
-      id="container"
-      style="width: 100vw; height: 100vh; position: relative"
-    ></div>
+      id="wrapper"
+      style="
+        width: 100vw;
+        height: 100vh;
+        position: relative;
+
+        display: flex;
+      "
+    >
+      <div
+        id="sidebar"
+        style="height: 100vh; transition: width 0.3s ease-in-out"
+      ></div>
+
+      <div id="container" style="flex: 1; position: relative"></div>
+    </div>
 
     <script src="./DemoApp/Demo1/scripts/CanvasImg2Img.js"></script>
     <script src="./DemoApp/Demo1/scripts/SaveImg.js"></script>
@@ -50,5 +58,7 @@
     <script src="./framework/UI/SystemUI/Input.js" type="module"></script>
     <script src="./framework/UI/SystemUI/Text.js" type="module"></script>
     <script src="./framework/myapp.js" type="module"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.es5.min.js"></script>
   </body>
 </html>

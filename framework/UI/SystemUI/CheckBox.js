@@ -7,34 +7,39 @@ class CheckBox extends BaseView {
   startDrawing(parent) {
     this.element.innerHTML = `
     <div style="box-sizing: border-box; position: absolute; inset: 0">
-    <svg
-      style="
-        box-sizing: border-box;
-        border-radius: 0px;
-        position: absolute;
-        left: 0;
-        top: 0;
-        overflow: visible;
-      "
-      width="28%"
-      height="100%"
-      viewBox="0 0 30 32"
+   
+      <div class="select-box" style="width:28%;height:100%;border-left:dashed 1px #C4C6CA;
+      border-top:dashed 1px #C4C6CA;
+      border-bottom:dashed 1px #C4C6CA;
+      box-sizing: border-box;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+      "><svg
+      class="_3-5"
+      style="opacity:0"
+      width="18"
+      height="18"
+      viewBox="0 0 18 18"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      preserveAspectRatio="none"
     >
       <path
-        class="choicebox"
-        d="M27.5024 6L27.1675 2L26.6692 2.04172L26.5401 0.5H25.1666V0H21.4997V0.5H17.8328V0H14.1659V0.5H10.499V0H6.83206V0.5H4.99862C4.52312 0.5 4.07097 0.594542 3.65899 0.765385L3.46746 0.303522C2.4897 0.708983 1.7076 1.49109 1.30214 2.46885L1.764 2.66038C1.59316 3.07236 1.49862 3.52451 1.49862 4V6H0.998619V10H1.49862V14H0.998619V18H1.49862V22H0.998619V26H1.49862V28C1.49862 28.4755 1.59316 28.9276 1.764 29.3396L1.30214 29.5312C1.7076 30.5089 2.48971 31.291 3.46747 31.6965L3.65899 31.2346C4.07098 31.4055 4.52313 31.5 4.99862 31.5H7.05537V32H11.1689V31.5H15.2824V32H19.3959V31.5H23.5094V32H27.6229V31.5H29.1361L29.014 30.0417L29.5122 30L29.1772 26L28.679 26.0417L28.344 22.0417L28.8423 22L28.5073 18L28.0091 18.0417L27.6741 14.0417L28.1724 14L27.8374 10L27.3391 10.0417L27.0042 6.04172L27.5024 6Z"
-        stroke="#C4C6CA"
-        stroke-dasharray="4 4"
+        d="M7.5896 12.4594L3.62573 8.49729C3.40601 8.27756 3.40601 7.92249 3.62573 7.70276C3.84546 7.48303 4.20054 7.48303 4.42026 7.70276L8.38237 11.6649C8.6021 11.8846 8.6021 12.2397 8.38237 12.4594C8.1644 12.6791 7.80757 12.6791 7.5896 12.4594Z"
+        fill="#FA7C70"
+      />
+      <path
+        d="M7.60166 12.4717C7.38018 12.2502 7.38018 11.8881 7.60166 11.6666L13.5308 5.73752C13.7522 5.51604 14.1144 5.51604 14.3358 5.73752C14.5573 5.95901 14.5573 6.32112 14.3358 6.5426L8.40674 12.4717C8.18525 12.6949 7.8249 12.6949 7.60166 12.4717Z"
+        fill="#FA7C70"
       />
     </svg>
+    </div>
 
     <div
       style="
         box-sizing: border-box;
-        width: 100%;
+        width: 76%;
         height: 100%;
         position: absolute;
         left: 24%;
@@ -150,6 +155,7 @@ class CheckBox extends BaseView {
           align-items: center;
           position: absolute;
           z-index: 1;
+          font: 400 16px "Arial", sans-serif;
         "
       >
         <div>${this.content.text}</div>
@@ -192,7 +198,8 @@ class CheckBox extends BaseView {
     }
 
     this.element.id = this.name;
-    this.element.classList.add("checkbox");
+    // this.element.classList.add("checkbox");
+    this.element.style.cursor = "pointer";
     this.element.style.position = "absolute";
     this.element.style.width = this.frame.width;
     this.element.style.height = this.frame.height;
@@ -288,6 +295,15 @@ class CheckBox extends BaseView {
     // 创建DOM并添加到父级容器
 
     parentContainer.appendChild(domElement);
+
+    const svgs = this.element.querySelector("._3-5");
+    this.element.addEventListener("click", () => {
+      if (svgs.style.opacity == 0) {
+        svgs.style.opacity = 1;
+      } else {
+        svgs.style.opacity = 0;
+      }
+    });
   }
 
   handleActions(arr) {
@@ -365,21 +381,24 @@ class CheckBox extends BaseView {
   }
 
   onMouseOver(event) {
-    let tem = document.querySelector(".choicebox");
-    console.log(tem);
-    tem.setAttribute("fill", "#FA7C70");
-    tem.setAttribute("fill-opacity", "0.05");
+    let tem = this.element.querySelector(".select-box");
+    tem.style.background = "rgba(250, 124, 112, 0.05)";
+    // console.log(tem);
+    // tem.setAttribute("fill", "#FA7C70");
+    // tem.setAttribute("fill-opacity", "0.05");
 
-    let tem2 = document.querySelector(".checkbox-text");
+    let tem2 = this.element.querySelector(".checkbox-text");
     tem2.style.color = "#c4c6ca";
   }
   onMouseOut(event) {
-    let tem = document.querySelector(".choicebox");
-    console.log(tem);
-    tem.setAttribute("fill", "none");
-    tem.setAttribute("fill-opacity", "none");
+    let tem = this.element.querySelector(".select-box");
+    tem.style.background = "none";
+    // let tem = document.querySelector(".choicebox");
+    // console.log(tem);
+    // tem.setAttribute("fill", "none");
+    // tem.setAttribute("fill-opacity", "none");
 
-    let tem2 = document.querySelector(".checkbox-text");
+    let tem2 = this.element.querySelector(".checkbox-text");
     tem2.style.color = "#7e828a";
   }
 }

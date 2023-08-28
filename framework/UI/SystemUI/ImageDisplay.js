@@ -191,8 +191,6 @@ class ImageDisplay extends BaseView {
     }
 
     for (const action of this.actions) {
-      console.log(action);
-
       if (action.script) {
         if (!action.event) {
           let functionCallString;
